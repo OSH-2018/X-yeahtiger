@@ -4,6 +4,8 @@
 #include <unistd.h> 
 #include <sys/mman.h>
 
+typedef int (*pfun)();
+
 int main(int argc, char *argv[]) {
   // Machine code for:
   //   mov eax, 0
@@ -31,7 +33,7 @@ int main(int argc, char *argv[]) {
   mprotect(mem,4096,PROT_EXEC);
 
   // The function will return the user's value.
-  int (*func)() = mem;
+  int (*func)() = (pfun)mem;
   printf("%d\n",func());
   return 0;
 }
