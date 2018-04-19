@@ -1,3 +1,7 @@
+/*
+ * jit
+ * http://blog.reverberate.org/2012/12/hello-jit-world-joy-of-simple-jits.html
+ */ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
