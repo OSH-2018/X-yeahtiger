@@ -46,14 +46,14 @@ Ftrace是Linux进行代码级实践分析最有效的工具之一，比如我们
 	修改 regs->ip 指针，将其指向新函数
 kaptch 在运行过程中会确保旧函数不被执行，以防新旧程序或打补丁的程序发生冲突
 
-![](https://img-blog.csdn.net/20150724094156283?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+![] (https://img-blog.csdn.net/20150724094156283?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 
 大致流程为：
 
 1. 补丁进程 增加一个ftrace 跟踪项（eg：foo() 函数），追踪哪些进程使用旧foo()函数；
 2. 调用 stop_machine 停止所有正在运行的进程和中断，并且遍历 stop_machine 的返回值，用来确保旧的foo() 函数确实已经被停止。检查旧的 foo() 函数在栈中的位置。
 3. 更新hash 表，使函数调用栈中的指针指向新的 foo()函数，但是旧的foo()函数的指针地址保留方便还原。
-![](https://img-blog.csdn.net/20150724104606699?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+![] (https://img-blog.csdn.net/20150724104606699?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQv/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
 ### 缺陷与不足
 
 1. 某些函数不支持hot patch，如（schedule(), sys_poll(), sys_select(), sys_read(), sys_nanosleep()）
