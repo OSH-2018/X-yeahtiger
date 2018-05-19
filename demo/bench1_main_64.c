@@ -5,10 +5,11 @@
 #include <signal.h>
 #include <sys/mman.h>
 #include <dlfcn.h>
+#include <setjmp.h>
 
 int global_data;
 
-int is_prime(int n) {
+__attribute__ ((noinline)) int is_prime(int n) {
     global_data++;
     for(int i=2;i<n;i++){
         if(n%i==0) return 0;
@@ -23,10 +24,6 @@ void print_prime() {
             printf("%d\n",i);
         }
     }
-}
-
-void jump(void (*pfun)()){
-    pfun();
 }
 
 void signal_handle(int sig_num)
@@ -54,10 +51,20 @@ void signal_handle(int sig_num)
         mprotect(pg, pagesize, PROT_READ | PROT_WRITE | PROT_EXEC );
         mprotect(pg + pagesize, pagesize, PROT_READ | PROT_WRITE | PROT_EXEC );
 
-		//change the code
-        old_func[0] = (char)0xeb;
-        old_func[1] = (char)(new_func - (old_func+2));
+        // push %rax
+        old_func[0] = 0x50;     
         
+        // movq %0,%%rax
+        old_func[1] = 0x48;     
+        old_func[2] = 0xb8;
+        *((u_int64_t*)(old_func+3)) = (u_int64_t) new_func;
+
+        // jmpq *%eax
+        old_func[11] = 0xff;
+        old_func[12] = 0xe0;
+
+        old_func[13] = old_func[14] = old_func[15] = 0x90;
+
         mprotect(pg, pagesize, PROT_READ | PROT_EXEC );
         mprotect(pg + pagesize, pagesize, PROT_READ | PROT_EXEC );
     }
