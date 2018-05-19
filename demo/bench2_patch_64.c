@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-extern int* global_data;
+int* global_data;
 
 void fix_init(int* p_global_data) {
     global_data = p_global_data;
