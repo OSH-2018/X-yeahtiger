@@ -1,4 +1,6 @@
 // gcc bench1_main_64.c -ldl -g -O2
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +22,7 @@ __attribute__ ((noinline)) int is_prime(int n) {
 
 void print_prime() {
     for(int i=2;i<10000000;i++) {
+        printf("global_data:%d\n",global_data);
         if(is_prime(i)){
             sleep(1);
             printf("%d\n",i);
@@ -37,15 +40,21 @@ void signal_handle(int sig_num)
             fprintf(stderr, "%s\n", dlerror());
             exit(-1);
         }
-        /*void (*fix_init)(int*) =  dlsym(handle,"fix_init");
-        if(!fix_init){
+        
+        // init
+        Dl_info so_info;  
+        int rc;      
+        void (*fix_init)(void*,int*) =  dlsym(handle,"fix_init");
+        rc = dladdr(fix_init, &so_info);
+        if(!fix_init || !rc){
             fprintf(stderr, "%s\n", dlerror());
             exit(-1);
         }
-        fix_init(&global_data);*/
-        /*
-        char* new_func = dlsym(handle,"fix_is_prime");
+        void* so_base = so_info.dli_fbase;
+        fix_init(so_base,&global_data);
 
+        // fix
+        char* new_func = dlsym(handle,"fix_is_prime");
         char *old_func = (char *)is_prime;
         const int pagesize = sysconf(_SC_PAGE_SIZE);
         char* pg = (char*) ((size_t) old_func & ~(pagesize - 1));
@@ -67,11 +76,10 @@ void signal_handle(int sig_num)
         old_func[13] = old_func[14] = old_func[15] = 0x90;
 
         mprotect(pg, pagesize, PROT_READ | PROT_EXEC );
-        mprotect(pg + pagesize, pagesize, PROT_READ | PROT_EXEC );*/
+        mprotect(pg + pagesize, pagesize, PROT_READ | PROT_EXEC );
     }
 }
 
-// /var/tigerfix.tmp
 void shell() {
     signal(SIGUSR1, signal_handle);
 }
