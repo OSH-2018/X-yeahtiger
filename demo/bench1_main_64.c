@@ -12,7 +12,12 @@
 
 int global_data;
 
+void print_global(){
+    printf("global_data:%d\n",global_data);
+}
+
 __attribute__ ((noinline)) int is_prime(int n) {
+    print_global();
     global_data++;
     for(int i=2;i<n;i++){
         if(n%i==0) return 0;
@@ -20,9 +25,9 @@ __attribute__ ((noinline)) int is_prime(int n) {
     return 1;
 }
 
+
 void print_prime() {
     for(int i=2;i<10000000;i++) {
-        printf("global_data:%d\n",global_data);
         if(is_prime(i)){
             sleep(1);
             printf("%d\n",i);
@@ -44,14 +49,14 @@ void signal_handle(int sig_num)
         // init
         Dl_info so_info;  
         int rc;      
-        void (*fix_init)(void*,int*) =  dlsym(handle,"fix_init");
+        void (*fix_init)(void*,void*,void*) =  dlsym(handle,"fix_init");
         rc = dladdr(fix_init, &so_info);
         if(!fix_init || !rc){
             fprintf(stderr, "%s\n", dlerror());
             exit(-1);
         }
         void* so_base = so_info.dli_fbase;
-        fix_init(so_base,&global_data);
+        fix_init(so_base,&global_data,&print_global);
 
         // fix
         char* new_func = dlsym(handle,"fix_is_prime");
