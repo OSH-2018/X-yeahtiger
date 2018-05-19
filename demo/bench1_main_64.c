@@ -1,3 +1,4 @@
+// gcc bench1_main_64.c -ldl -g -O2
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,12 +37,12 @@ void signal_handle(int sig_num)
             fprintf(stderr, "%s\n", dlerror());
             exit(-1);
         }
-        void (*fix_init)(int*) =  dlsym(handle,"fix_init");
+        /*void (*fix_init)(int*) =  dlsym(handle,"fix_init");
         if(!fix_init){
             fprintf(stderr, "%s\n", dlerror());
             exit(-1);
         }
-        fix_init(&global_data);
+        fix_init(&global_data);*/
         /*
         char* new_func = dlsym(handle,"fix_is_prime");
 

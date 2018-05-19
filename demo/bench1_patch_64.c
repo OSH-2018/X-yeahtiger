@@ -3,6 +3,10 @@
 int global_y;
 extern int global_data;
 
+void init(){
+    printf("first init\n");
+}
+
 void fix_init(int* p_global_data) {
     // global_data = p_global_data;
     printf("fix_init");

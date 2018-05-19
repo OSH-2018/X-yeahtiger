@@ -1,3 +1,4 @@
+// gcc bench2_patch_64.c -fPIC -shared -O2 -g -o fix.so
 #include <stdio.h>
 
 int* global_data;
