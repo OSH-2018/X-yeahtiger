@@ -42,7 +42,7 @@ void signal_handle(int sig_num)
             exit(-1);
         }
         fix_init(&global_data);
-        
+        /*
         char* new_func = dlsym(handle,"fix_is_prime");
 
         char *old_func = (char *)is_prime;
@@ -66,7 +66,7 @@ void signal_handle(int sig_num)
         old_func[13] = old_func[14] = old_func[15] = 0x90;
 
         mprotect(pg, pagesize, PROT_READ | PROT_EXEC );
-        mprotect(pg + pagesize, pagesize, PROT_READ | PROT_EXEC );
+        mprotect(pg + pagesize, pagesize, PROT_READ | PROT_EXEC );*/
     }
 }
 
