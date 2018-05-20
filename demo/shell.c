@@ -1,37 +1,10 @@
-// gcc bench1_main_64.c -ldl -g -O2
 #define _GNU_SOURCE
 
 #include <dlfcn.h>
-#include <setjmp.h>
-#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
-
-int global_data;
-
-void print_global() { printf("global_data:%d\n", global_data); }
-
-__attribute__((noinline)) int is_prime(int n) {
-  print_global();
-  global_data++;
-  for (int i = 2; i < n; i++) {
-    if (n % i == 0)
-      return 0;
-  }
-  return 1;
-}
-
-void print_prime() {
-  for (int i = 2; i < 10000000; i++) {
-    if (is_prime(i)) {
-      sleep(1);
-      printf("%d\n", i);
-    }
-  }
-}
 
 typedef u_int64_t ptr_t;
 
@@ -86,9 +59,6 @@ void do_fix() {
     printf("%p : %p\n", p_got_item, (void *)real_addr);
   }
 
-  printf("real:%p,%p\n", &global_data, print_global);
-  tigerfix_init();
-
   // fix
   ptr_t *fix_units = malloc(sizeof(ptr_t) * 2); // config: fix units
   fix_units[0] = (ptr_t)0x0000000000000cb0;     // nm a.out | grep is_prime
@@ -119,18 +89,4 @@ void do_fix() {
 
     mprotect(pg, pagesize, PROT_READ | PROT_EXEC);
   }
-}
-
-void signal_handle(int sig_num) {
-  if (sig_num == SIGUSR1) {
-    do_fix();
-  }
-}
-
-void shell() { signal(SIGUSR1, signal_handle); }
-
-int main() {
-  shell();
-  print_prime();
-  return 0;
 }
