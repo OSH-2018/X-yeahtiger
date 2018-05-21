@@ -16,7 +16,7 @@ __asm__(
     "jmp is_prime\n\t"
 );
 
-static __attribute__ ((noinline)) __attribute__ ((__used__)) int is_prime(int n) {
+static __attribute__ ((noinline,used)) int is_prime(int n) {
     print_global();
     global_data+=2;
     for(int i=2;i*i<n;i++){

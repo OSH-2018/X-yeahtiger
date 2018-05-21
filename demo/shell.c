@@ -13,7 +13,7 @@ __asm__(
     "do_fix_entry:\n\t"
     "nop\n\t"//"int $0x3\n\t"
     "callq do_fix\n\t"
-    "leaveq\n\t"
+    // "leaveq\n\t"
     "int $0x3\n\t"
 );
 
