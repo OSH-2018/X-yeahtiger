@@ -136,7 +136,7 @@ kpatch是RedHat主导开发的“内核在线升级”工具，可在不重启�
 # Issues
 
 * 确定 config 文件格式，并让 shell 从 config 里读取更新配置 (modify shell)，cli 传递 config 文件地址给 shell (参考pmain传参，[64位寄存器传参](http://abcdxyzk.github.io/blog/2012/11/23/assembly-args/ )) (modify shell cli; no-elf)
-* x86 支持 (基于 milestone 0)
+* x86 支持和静态链接支持 (基于 milestone 0)
 * 完善 tfix 命令行接口(parser)，写 help
 * config 的生成和 patch 的生成 
 * 给 tfix 写文档(先写中文，文档内容包括三部分：主程序需要哪些改动、patch和config怎么生成、tfix的cli怎么用)，写 help（英文） (readme,tfix)
