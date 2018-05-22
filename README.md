@@ -135,14 +135,23 @@ kpatch是RedHat主导开发的“内核在线升级”工具，可在不重启�
 
 # Issues
 
-* 确定 config 文件格式，并让 shell 从 config 里读取更新配置
-* cli 传递 config 文件地址给 shell (参考pmain传参，[64位寄存器传参](http://abcdxyzk.github.io/blog/2012/11/23/assembly-args/ ))
-* 完善 tfix 命令行接口，给 tfix 写文档(先写中文，文档内容包括三部分：主程序需要哪些改动、patch和config怎么生成、tfix的cli怎么用)，写 help（英文）
+* 确定 config 文件格式，并让 shell 从 config 里读取更新配置 (modify shell)，cli 传递 config 文件地址给 shell (参考pmain传参，[64位寄存器传参](http://abcdxyzk.github.io/blog/2012/11/23/assembly-args/ )) (modify shell cli; no-elf)
+* x86 支持 (基于 milestone 0)
+* 完善 tfix 命令行接口(parser)，写 help
+* config 的生成和 patch 的生成 
+* 给 tfix 写文档(先写中文，文档内容包括三部分：主程序需要哪些改动、patch和config怎么生成、tfix的cli怎么用)，写 help（英文） (readme,tfix)
 
-这三个做好后，我们得到了一个勉强可以用的普适的工具
+这五个做好后，我们得到了一个勉强可以用的普适的工具 (milestone 1)
 
-* patch 的生成和 config 的生成
+* 更友好的 patch 生成
 * 安全的更新点的选择（研究堆栈，大量使用软中断）
 * 主程序不用做修改，libtfix 通过注入的方式加进主程序
     * [elf感染](http://fangrn.iteye.com/blog/735222)
     * [LIEF](https://lief.quarkslab.com/doc/tutorials/05_elf_infect_plt_got.html)
+* 二次 patch 问题
+
+ 
+# Milestones
+* milestone 0: basic framework (closed)
+* milestone 1: available tool
+* milestone 2: tigerfix 1.0 release
