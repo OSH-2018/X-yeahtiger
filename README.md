@@ -17,11 +17,11 @@
 /demo 演示程序目录，演示项目各部分实现原理的最小范例
 
 ## FAQ
-### visual studio可以完成热部署，那么为什么还要用tiger fix？
+### Visual Studio 可以完成热部署，那么为什么还要用tiger fix？
 
-**visual studio 的热部署方案叫做visual studio edit and  continue，最大的缺点是不支持添加超过64k字节的新代码或数据，我们的方案会对此进行改进**
+**Visual Studio 的热部署方案名为 "Edit and Continue"，最大的缺点是不支持添加超过64k字节的新代码或数据，我们的方案会对此进行改进**
 
-以下是edit and continue不支持修复的详细内容
+以下是 Microsoft 官方给出的 Edit and Continue 不支持功能列表
 
 **1.不支持的更改**
 
